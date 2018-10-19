@@ -66,33 +66,45 @@ class Mannager:
                 x1=(coord[0]+1)*10
                 y1=(coord[1]+1)*10
                 self.canvas.create_rectangle(x0,y0,x1,y1,fill=self.players[key].color)
+            # x0=self.players[key].head[0]*10
+            # y0=self.players[key].head[1]*10
+            # x1=(self.players[key].head[0]+1)*10
+            # y1=(self.players[key].head[1]+1)*10
+            # self.canvas.create_rectangle(x0,y0,x1,y1,fill=self.players[key].color)
+            speed=2.0
             while self.game_on:
                 value=self.canvas.master.score_value_label[key]
                 value.set_text=self.players[key].score
                 # win.timeout(150 - (len(snake)/5 + len(snake)/10)%120)          # Increases the speed of Snake as its length increases
+                x0=self.players[key].coord[0]*10
+                y0=self.players[key].coord[1]*10
+                x1=(self.players[key].coord[0]+1)*10
+                y1=(self.players[key].coord[1]+1)*10
+                print(x0,y0,x1,y1)
+                self.canvas.create_rectangle(x0,y0,x1,y1,fill='white')
+                print(self.players[key].pattern,self.players[key].coord)
+                if self.players[key].last == 'Left':
+                    self.players[key].walk_l()
+                if self.players[key].last == 'Right':
+                    self.players[key].walk_r()
+                if self.players[key].last == 'Down':
+                    self.players[key].walk_d()
+                if self.players[key].last == 'Up':
+                    self.players[key].walk_u()
                 if(self.players[key].pattern=='crash'):
                     break
-                elif(self.players[key].pattern=='food'):
+                if(self.players[key].pattern=='food'):
                     self.canvas.create_rectangle(self.food_coord[0]*10,self.food_coord[1]*10,(self.food_coord[0]+1)*10,(self.food_coord[1]+1)*10,fill='white')
                     self.food_coord=self.players[key].coord
                     self.canvas.create_rectangle(self.food_coord[0]*10,self.food_coord[1]*10,(self.food_coord[0]+1)*10,(self.food_coord[1]+1)*10,fill=self.food_color)
-                elif(self.players[key].pattern=='pop'):
+                if(self.players[key].pattern=='pop'):
                     x0=self.players[key].coord[0]*10
                     y0=self.players[key].coord[1]*10
                     x1=(self.players[key].coord[0]+1)*10
                     y1=(self.players[key].coord[1]+1)*10
                     print(x0,y0,x1,y1)
                     self.canvas.create_rectangle(x0,y0,x1,y1,fill=self.players[key].color)
-                else:
-                    if self.players[key].last == 'Left':
-                        self.players[key].walk_l()
-                    if self.players[key].last == 'Right':
-                        self.players[key].walk_r()
-                    if self.players[key].last == 'Down':
-                        self.players[key].walk_d()
-                    if self.players[key].last == 'Up':
-                        self.players[key].walk_u()
-                time.sleep(1)
+                # time.sleep(speed/len(self.players[key].coords))
         except KeyboardInterrupt:
             self.exit()
 

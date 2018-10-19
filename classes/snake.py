@@ -21,9 +21,10 @@ class Snake:
         self.__size=self.__init_size
         self.head=[randint(0, self.xlim), randint(0, self.ylim)]
         self.coords=[self.head, [self.head[0],self.head[1]-1], [self.head[0],self.head[1]-2]]
+        self.coord=[self.head[0],self.head[1]-2]
         self.score=0
-        self.xlim=30
-        self.ylim=30
+        self.xlim=29
+        self.ylim=29
         self.color=color
 
     def walk(self, xval=0, yval=0, food=[]):

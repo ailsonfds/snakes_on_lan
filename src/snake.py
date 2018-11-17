@@ -22,9 +22,9 @@ class Snake(object):
 		self.alive=True
 		self.loc.append(initial_pos)
 		self.update()
-		print(color)
+		# print(color)
 		while self.size < self._initial_size:
-			print(self.move(growth=True))
+			self.move(growth=True)
 
 	def get_xlims(self):
 		return type(self)._xlims

@@ -1,7 +1,6 @@
 # arena.py
 #!/usr/bin/python3
 
-import math
 try:
     import tkinter as tk
     from tkinter import ttk
@@ -37,6 +36,9 @@ class Arena(ttk.Frame, object):
 
         for child in self.winfo_children():
             child.grid_configure(padx=5, pady=5)
+
+        self.master.bind('<Control-c>', self.exit)
+        self.master.bind('<Escape>', self.exit)
 
     def add_score_labels(self, players={}):
         for key, value in players.items():

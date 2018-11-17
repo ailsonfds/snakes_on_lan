@@ -1,7 +1,7 @@
 # snake.py
 
 from random import randint
-import math
+# import math
 
 class Snake:
     __init_size=3
@@ -16,7 +16,7 @@ class Snake:
     coord=[]
     last='Up'
 
-    def __init__(self, xlim=30, ylim=30, color=None):
+    def __init__(self, xlim=30, ylim=30, color='white'):
         self.__init_size=3
         self.__size=self.__init_size
         self.head=[randint(0, self.xlim), randint(0, self.ylim)]

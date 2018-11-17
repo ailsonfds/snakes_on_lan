@@ -1,6 +1,6 @@
 import socket
 import sys
-
+import time
 
 class Client:
 
@@ -16,36 +16,36 @@ class Client:
 
     def connect(self):
         try:
-            print "Trying make connection on: "+ self.host + ":" + str(self.port) + "...\n\n"
+            print("Trying make connection on: "+ self.host + ":" + str(self.port) + "...\n\n")
             self.__sckt = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
             self.__sckt.connect((self.host , self.port))
             self.send()
 
-        except socket.gaierror, e:
-            print "Unknow Host: %s" %e
-            print "Sleeping 3 seconds before try again...\n"
+        except socket.gaierror as e:
+            print("Unknow Host: %s" %e)
+            print("Sleeping 3 seconds before try again...\n")
             time.sleep(3)
             self.connect()
 
-        except socket.error, e:
-            print "connection error: %s" %e
-            print "Sleeping 3 seconds before try again...\n"
+        except socket.error as e:
+            print("connection error: %s" %e)
+            print("Sleeping 3 seconds before try again...\n")
             time.sleep(3)
             self.connect()
 
     def send(self, msg='Foo'):
-        print " Suscefully connection"
+        print("Suscefully connection")
         while True:
             try:
-                msg = raw_input()
+                msg = input()
                 self.__sckt.sendall(bytes(msg))
                 msg = self.__sckt.recv(1024).strip("\n")
                 if msg == "Ok":
                     print(msg)
                     self.connect()
 
-            except socket.error, e:
-                print "Error receiving data: " +str(e)
+            except socket.error as e:
+                print("Error receiving data: " +str(e))
                 self.__sckt.send(str(e))
                 self.__sckt.close()
                 self.connect()
@@ -64,7 +64,7 @@ def main():
     try:
         client.connect()
     except KeyboardInterrupt:
-        print "\n\nFinishing aplication..."
+        print("\n\nFinishing aplication...")
         client.close()
         sys.exit(1)
 

@@ -1,7 +1,7 @@
 import socket
 import sys
 import threading
-import time
+# import time
 import argparse
 import subprocess
 # Thanks to https://stackoverflow.com/questions/12332975/installing-python-module-within-code
@@ -74,7 +74,7 @@ def main():
 
     args = arg.parse_args()
     port = args.port
-    i = 1
+    #i = 1
 
     try:
         server = Server(port)

@@ -1,14 +1,9 @@
 # mannager.py
-import curses
 import snake
-import threading
+# import threading
 import time
 
 from arena import Arena
-from curses import KEY_DOWN
-from curses import KEY_LEFT
-from curses import KEY_RIGHT
-from curses import KEY_UP
 from random import randint
 
 try:
@@ -34,25 +29,22 @@ class Mannager:
         self.play_btn.grid(column=2, row=5, sticky=(tk.W,tk.S))
         for child in self.canvas.master.winfo_children():
             child.grid_configure(padx=5, pady=5)
-        self.canvas.master.master.bind('<Control-c>', self.exit)
-        self.canvas.master.master.bind('<Escape>', self.exit)
         self.canvas.master.master.bind('<Return>', self.single_player)
         
 
     def add_player(self,name=''):
-        print(len(self.players.keys()))
-        if len(self.players.keys()) <= self.max_players:
+        if len(self.players) <= self.max_players:
             self.players[name] = snake.Snake(color=self.players_colors[len(self.players.keys())])
 
     def single_player(self,*args):
         self.canvas.master.add_score_labels(self.players)
         self.canvas.create_rectangle(self.food_coord[0]*10,self.food_coord[1]*10,(self.food_coord[0]+1)*10,(self.food_coord[1]+1)*10,fill=self.food_color)
         key='player1'
-        threading.Thread(target=self.play_thread).start()
         self.canvas.master.master.bind('<Key-Left>', self.players[key].walk_l)
         self.canvas.master.master.bind('<Key-Right>', self.players[key].walk_r)
         self.canvas.master.master.bind('<Key-Up>', self.players[key].walk_u)
         self.canvas.master.master.bind('<Key-Down>', self.players[key].walk_d)
+        self.play_thread()
 
     def play_thread(self):
         key='player1'
@@ -74,7 +66,7 @@ class Mannager:
             speed=2.0
             while self.game_on:
                 value=self.canvas.master.score_value_label[key]
-                value.set_text=self.players[key].score
+                value.config(text=self.players[key].score)
                 # win.timeout(150 - (len(snake)/5 + len(snake)/10)%120)          # Increases the speed of Snake as its length increases
                 x0=self.players[key].coord[0]*10
                 y0=self.players[key].coord[1]*10
@@ -104,7 +96,7 @@ class Mannager:
                     y1=(self.players[key].coord[1]+1)*10
                     print(x0,y0,x1,y1)
                     self.canvas.create_rectangle(x0,y0,x1,y1,fill=self.players[key].color)
-                # time.sleep(speed/len(self.players[key].coords))
+                time.sleep(speed/len(self.players[key].coords))
         except KeyboardInterrupt:
             self.exit()
 
@@ -120,11 +112,11 @@ class Mannager:
                 x1=(self.players[key].coords[0][0]+1)*10
                 y1=(self.players[key].coords[0][1]+1)*10
                 print(x0,y0,x1,y1)
-                if(pattern=='crash'):
+                if(self.players[key].pattern=='crash'):
                     break
-                elif(pattern=='food'):
+                elif(self.players[key].pattern=='food'):
                     self.canvas.create_rectangle(self.food_coord[0]*10,self.food_coord[1]*10,(self.food_coord[0]+1)*10,(self.food_coord[1]+1)*10,fill='white')
-                    self.food_coord=coord
+                    self.food_coord=self.players[key].coord
                     self.canvas.create_rectangle(self.food_coord[0]*10,self.food_coord[1]*10,(self.food_coord[0]+1)*10,(self.food_coord[1]+1)*10,fill=self.food_color)
 
                 self.canvas.create_rectangle(x0,y0,x1,y1,fill=self.players[key].color)
@@ -141,6 +133,7 @@ def main():
     app = Arena(master=root,title='Snake Attack')
     # app.pane.create_rectangle(20,20,30,30,fill='red')
     mannager = Mannager(app.pane)
+    print(mannager)
     app.mainloop()
 
 if __name__ == "__main__":

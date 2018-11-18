@@ -24,7 +24,8 @@ class Snake(object):
 		self.update()
 		# print(color)
 		while self.size < self._initial_size:
-			self.move(growth=True)
+			result = self.move(growth=True)
+			# print(result)
 
 	def get_xlims(self):
 		return type(self)._xlims
@@ -97,7 +98,8 @@ class Snake(object):
 			return 's_crash',[-1,-1]
 
 		self.loc.insert(0, newpos)
-		self.next_mov=[xcoord, ycoord]
+		# print(self.next_mov)
+		# self.next_mov=[xcoord, ycoord]
 		if not growth:
 			last_pos=self.loc.pop()
 			msg='walk'
@@ -108,6 +110,20 @@ class Snake(object):
 		self.update()
 		return msg,last_pos
 
+	def set_next_mov(self,val):
+		self.next_mov=val
+
+	def up(self,event):
+		self.set_next_mov([0,-1])
+
+	def down(self,event):
+		self.set_next_mov([0,1])
+
+	def left(self,event):
+		self.set_next_mov([-1,0])
+	
+	def right(self,event):
+		self.set_next_mov([1,0])
 
 Snake.xlims=10
 Snake.ylims=10

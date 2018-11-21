@@ -18,25 +18,40 @@ class Mannager(object):
     """
     players={}
     players_colors={}
+    food=[]
 
     def __init__(self, players_name=[], players_colors=[]):
         super(Mannager, self).__init__()
         self.players={}
         self.players_colors={}
+        self.food=[]
         if len(players_name)!=len(players_colors):
             raise Exception("Aren't you missing someone?")
         for i, name in enumerate(players_name):
             self.players[name]=Snake()
             self.players_colors[name]=players_colors[i]
 
-    def add_player(player_name, player_color, player_snake):
+    def add_player(self,player_name, player_color, player_snake):
         self.players[player_name]=player_snake
+        self.players_colors[player_name]=player_color
 
-    def score():
+    def score(self):
         score_dict={}
-        for key, value in players.items():
+        for key, value in self.players.items():
             score_dict[key]=value.size*10
         return score_dict
+
+    def brew_food(self):
+        '''
+        Method that made food appear at random spots.
+
+        Note: for future work, we can make the food give power to the snake.
+        '''
+        pass
+
+    def play(self):
+        pass
+
 
 def play(arena):
     Snake.xlims=29

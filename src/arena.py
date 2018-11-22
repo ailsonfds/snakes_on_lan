@@ -50,17 +50,21 @@ class Arena(ttk.Frame, object):
         self.pane.create_rectangle(xloc*self.tile_size, yloc*self.tile_size, (xloc+1)*self.tile_size, (yloc+1)*self.tile_size, fill=color)
 
     def lose_msg(self, msg='YOU LOSE'):
-        self.pane.create_text(150, 150, text=msg, fill='red', font=("Purisa", 20))
+        self.pane.create_text(150, 150, text=msg, fill='red', font=("Helvetica", 20, "bold"), justify=tk.CENTER)
 
-    def update_score(self, players={}):
-        for key, value in players.items():
+    def create_score(self,players={}):
+        for i, (key, value) in enumerate(players.items()):
             self.score_label[key] = ttk.Label(self, text='Score ' + key + ':')
-            self.score_label[key].grid(column=2,row=1, sticky=tk.W)
+            self.score_label[key].grid(column=2,row=i+1, sticky=tk.W)
             self.score_value_label[key] = ttk.Label(self, text=value)
-            self.score_value_label[key].grid(column=3,row=1, sticky=tk.E)
+            self.score_value_label[key].grid(column=3,row=i+1, sticky=tk.E)
 
         for child in self.winfo_children():
             child.grid_configure(padx=5, pady=5)
+
+    def update_score(self, players={}):
+        for key, value in players.items():
+            self.score_value_label[key]['text']=value
 
     def exit(self,*args):
         self.master.destroy()

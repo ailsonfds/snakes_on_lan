@@ -22,10 +22,12 @@ class Snake(object):
 		self.alive=True
 		self.loc.append(initial_pos)
 		self.update()
+		# print(self.loc)
 		# print(color)
 		while self.size < self._initial_size:
 			result = self.move(growth=True)
 			# print(result)
+		# print(self.loc)
 
 	def get_xlims(self):
 		return type(self)._xlims
@@ -63,7 +65,7 @@ class Snake(object):
 		self.tail=self.loc[-1]
 		self.size=len(self.loc)
 
-	def move(self,xcoord=next_mov[0],ycoord=next_mov[1],growth=False):
+	def move(self,xcoord=next_mov[0],ycoord=next_mov[1],growth=False, crash = False):
 		'''
 		To move down set ycoord=1.
 		To move up set ycoord=-1.
@@ -93,6 +95,11 @@ class Snake(object):
 
 		## check if crash it self
 		if newpos in self.loc:
+			self.next_mov=[0,0]
+			self.alive=False
+			return 's_crash',[-1,-1]
+
+		if(crash == True):
 			self.next_mov=[0,0]
 			self.alive=False
 			return 's_crash',[-1,-1]

@@ -7,9 +7,11 @@ except ImportError:
     from Tkinter import Tk, Button
     from ttk import Button
 from time import sleep
-from random import choice
+#from random import choice
+import random
 
-class Mannager(object):
+
+class Mannager(Arena):
     """
     docstring for Mannager
 
@@ -47,8 +49,14 @@ class Mannager(object):
 
         Note: for future work, we can make the food give power to the snake.
         '''
-        pass
+		xRandPos = random.randint(0, 300)
+		yRandPos = random.randint(0, 300)
 
+		food[0] = xRandPos
+		food[1] = yRandPos		
+
+		self.draw_tile(self,xRandPos,yRandPos,color='red')
+	
     def play(self):
         pass
 

@@ -34,8 +34,6 @@ class Arena(ttk.Frame, object):
         for i in range(31):
             self.vlines.append(self.pane.create_line(i*self.tile_size,0,i*self.tile_size,self.pane.height))
             self.hlines.append(self.pane.create_line(0,i*self.tile_size,self.pane.width,i*self.tile_size))
-        self.quit = ttk.Button(self, text="QUIT", command=self.master.destroy)
-        self.quit.grid(column=2, row=6, sticky=(tk.W,tk.S))
 
         for child in self.winfo_children():
             child.grid_configure(padx=5, pady=5)

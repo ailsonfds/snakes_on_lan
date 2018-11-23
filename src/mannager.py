@@ -48,7 +48,7 @@ class Mannager(Arena):
         self.__sckt = None
         self.__conn = {}
         self.__threads = {}
-        self.__colors=[]
+        self.__colors=['red', 'green', 'blue', 'yellow']
         self.food=[0,0]
         self.game_on=False
         if len(players_name)!=len(players_colors):
@@ -127,18 +127,15 @@ class Mannager(Arena):
                 elif 'name=' in data:
                     # data=data.replace(' ','')
                     name=data.replace('name=','')
-                    self.players_addrs[addr]=name
-                    self.players_colors[name]=choice(self.__colors)
-                    self.__colors.remove[self.players_colors[name]]
-                    self.players[name]=Snake(color=players_colors[name], initial_pos=[random.randint(0,29), random.randint(0,29)])
-                    self.players_score[name]=self.players[name].size
-                    for snake_part in self.players[name].loc:
-                        self.draw_tile(snake_part[0],snake_part[1],self.players_colors[key])
+                    color=choice(self.__colors)
+                    self.add_player(name,color,Snake(color=color, initial_pos=[random.randint(0,29), random.randint(0,29)]))
             return data
 
     def add_player(self,player_name, player_color, player_snake):
         self.players[player_name]=player_snake
         self.players_colors[player_name]=player_color
+        for snake_part in self.players[player_name].loc:
+            self.draw_tile(snake_part[0],snake_part[1],self.players_colors[player_name])
 
     def score(self):
         score_dict ={}
@@ -195,6 +192,8 @@ class Mannager(Arena):
                 self.update_score(self.players_score)
                 self.update_idletasks()
                 sleep(0.1)
+        if self.game_on==False:
+            print('Foi errado')
         return
 
     def check_crash(self, player_name):

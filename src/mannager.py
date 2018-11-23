@@ -1,16 +1,18 @@
-from snake import Snake
-from arena import Arena
 try:
     from tkinter import Tk
     from tkinter.ttk import Button
 except ImportError:
     from Tkinter import Tk, Button
     from ttk import Button
-from time import sleep
-from random import choice
 import random
-from threading import Thread
 import socket
+import sys
+
+from arena import Arena
+from random import choice
+from snake import Snake
+from threading import Thread
+from time import sleep
 
 
 class Mannager(Arena):
@@ -130,6 +132,8 @@ class Mannager(Arena):
                     self.__colors.remove[self.players_colors[name]]
                     self.players[name]=Snake(color=players_colors[name], initial_pos=[random.randint(0,29), random.randint(0,29)])
                     self.players_score[name]=self.players[name].size
+                    for snake_part in self.players[name].loc:
+                        self.draw_tile(snake_part[0],snake_part[1],self.players_colors[key])
             return data
 
     def add_player(self,player_name, player_color, player_snake):
@@ -164,6 +168,7 @@ class Mannager(Arena):
         self.game_on=True
         while self.master.state()=='normal':
             if self.game_on==False:
+                print('Foi')
                 return
             for key, player_i in self.players.items():
                 player_color_i=self.players_colors[key]
@@ -205,8 +210,8 @@ class Mannager(Arena):
         print("Closing Server...")
         self.game_on=False
         self.__sckt.close()
-        self.master.destroy()
-
+        print(self.master.destroy())
+        sys.exit()
 
 def main():
     root=Tk()

@@ -118,8 +118,6 @@ class Mannager(Arena):
 
     def read(self, addr=''):
         while self._game_on:
-            if not self._game_on:
-                return
             data = self.__conn[addr].recv(1024)
             if data:
                 if 'left' in data:
@@ -170,9 +168,7 @@ class Mannager(Arena):
             for snake_part in value.loc:
                 self.draw_tile(snake_part[0],snake_part[1],self.players_colors[key])
         self.update()
-        while self.master.state()=='normal' and self._game_on:
-            if not self._game_on:
-                return
+        while self._game_on:
             for key, player_i in self.players.items():
                 player_color_i=self.players_colors[key]
                 

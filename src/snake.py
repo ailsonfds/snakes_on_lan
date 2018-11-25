@@ -120,19 +120,19 @@ class Snake(object):
 	def set_next_mov(self,val):
 		self.next_mov=val
 
-	def up(self,event=None):
+	def up(self,event):
 		if self.next_mov != [0,1]:
 			self.set_next_mov([0,-1])
 
-	def down(self,event=None):
+	def down(self,event):
 		if self.next_mov != [0,-1]:
 			self.set_next_mov([0,1])
 
-	def left(self,event=None):
+	def left(self,event):
 		if self.next_mov != [1,0]:
 			self.set_next_mov([-1,0])
 	
-	def right(self,event=None):
+	def right(self,event):
 		if self.next_mov != [-1,0]:
 			self.set_next_mov([1,0])
 

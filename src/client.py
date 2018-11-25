@@ -62,7 +62,7 @@ class Client:
     def close(self):
         self.__sckt.close()
 
-    def on_press(self, key):
+    def on_press(key):
         if key == Key.left:
             send_left()
         elif key == Key.right:
@@ -72,7 +72,7 @@ class Client:
         elif key == Key.down:
             self.send(msg='down')
 
-    def on_release(self, key):
+    def on_release(key):
         if key == Key.esc:
             # Stop listener
             return False
@@ -111,8 +111,8 @@ def main():
         client.send(msg=data)
         # Collect events until released
         with Listener(
-                on_press=client.on_press,
-                on_release=client.on_release) as listener:
+                on_press=on_press,
+                on_release=on_release) as listener:
             listener.join()
         while True:
             client.send(msg='')

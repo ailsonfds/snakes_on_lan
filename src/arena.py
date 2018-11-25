@@ -61,14 +61,8 @@ class Arena(ttk.Frame, object):
             child.grid_configure(padx=5, pady=5)
 
     def update_score(self, players={}):
-        try:
-            for key, value in players.items():
-                self.score_value_label[key]['text']=value
-        except KeyError:
-            self.create_score(self, players)
-        finally:
-            for key, value in players.items():
-                self.score_value_label[key]['text']=value
+        for key, value in players.items():
+            self.score_value_label[key]['text']=value
 
     def exit(self,*args):
         self.master.destroy()

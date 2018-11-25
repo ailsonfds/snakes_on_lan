@@ -121,6 +121,9 @@ class Mannager(Arena):
             if not self._game_on:
                 return
             data = self.__conn[addr].recv(1024)
+            data = data.decode('ascii')
+            print(type(data))
+            print(data)
             if data:
                 if 'left' in data:
                     self.players[self.players_addrs[addr]].left()

@@ -39,8 +39,7 @@ class Client:
 
     def send(self, msg='Foo'):
         try:
-            print(msg)
-            self.__sckt.sendall(bytes(msg))
+            self.__sckt.sendall(bytes(msg, 'utf8'))
         except socket.error as e:
             print("Error receiving data: " + str(e))
             self.__sckt.send(str(e))
@@ -65,11 +64,11 @@ class Client:
 
     def on_press(self, key):
         if key == Key.left:
-            self.send(msg='left')
+            send_left()
         elif key == Key.right:
-            self.send(msg='right')
+            send_right
         elif key == Key.up:
-            self.send(msg='up')
+            send_up
         elif key == Key.down:
             self.send(msg='down')
 
@@ -78,7 +77,9 @@ class Client:
             # Stop listener
             return False
 
+
 def main():
+
     ip = 'localhost'
     port = 5554
     if(len(sys.argv) > 2):
@@ -86,6 +87,23 @@ def main():
         port = int(sys.argv[2])
     client = Client(ip, port)
     root=Tk()
+
+    def on_press(key):
+        print(key)
+        if key == Key.left:
+            client.send_left()
+        elif key == Key.right:
+            client.send_right()
+        elif key == Key.up:
+            client.send_up()
+        elif key == Key.down:
+            client.send_down()
+
+    def on_release(key):
+        if key == Key.esc:
+            # Stop listener
+            return False
+
     try:
         client.connect()
         name='ailson'
@@ -96,10 +114,6 @@ def main():
                 on_press=client.on_press,
                 on_release=client.on_release) as listener:
             listener.join()
-        # root.bind('<Up>', client.send_up)
-        # root.bind('<Down>', client.send_down)
-        # root.bind('<Left>', client.send_left)
-        # root.bind('<Right>', client.send_right)
         while True:
             client.send(msg='')
 

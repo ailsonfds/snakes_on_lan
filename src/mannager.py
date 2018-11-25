@@ -135,7 +135,6 @@ class Mannager(Arena):
                     self.players_addrs[addr]=name
                     color=choice(self.__colors)
                     self.add_player(name,color,Snake(color=color, initial_pos=[random.randint(0,29), random.randint(0,29)]))
-                    # self.create_score(self.players_score)
             print(data)
 
     def add_player(self,player_name, player_color, player_snake):
@@ -144,6 +143,7 @@ class Mannager(Arena):
         self.players_score[player_name]=player_snake.size*10
         for snake_part in self.players[player_name].loc:
             self.draw_tile(snake_part[0],snake_part[1],self.players_colors[player_name])
+        self.create_score(self.players_score)
 
     def score(self):
         score_dict ={}

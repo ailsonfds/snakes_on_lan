@@ -115,6 +115,9 @@ class Mannager(Arena):
     def read(self, addr=''):
         while True:
             data = self.__conn[addr].recv(1024)
+            data = data.decode('ascii')
+            print(type(data))
+            print(data)
             if data:
                 if 'left' in data:
                     self.players[self.players_addrs[addr]].left()
@@ -128,9 +131,8 @@ class Mannager(Arena):
                     # data=data.replace(' ','')
                     name=data.replace('name=','')
                     color=choice(self.__colors)
-                    self.add_player(name,color,Snake(color=color, initial_pos=[random.randint(0,29), random.randint(0,29)]))
-            return data
-
+                    self.add_player(name,color,Snake(color=color, initial_pos=[random.randint(0,29), random.randint(0,29)]))        
+            continue        	
     def add_player(self,player_name, player_color, player_snake):
         self.players[player_name]=player_snake
         self.players_colors[player_name]=player_color

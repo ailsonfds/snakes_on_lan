@@ -1,0 +1,2 @@
+Requirement already satisfied: xlib in /usr/local/lib/python2.7/dist-packages (0.21)
+Requirement already satisfied: six>=1.10.0 in /usr/lib/python2.7/dist-packages (from xlib) (1.11.0)

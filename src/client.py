@@ -1,5 +1,6 @@
 import socket
 import sys
+import argparse
 import time
 from pynput.keyboard import Key, Listener
 try:
@@ -79,16 +80,25 @@ class Client:
             return False
 
 def main():
-    ip = 'localhost'
-    port = 5554
-    if(len(sys.argv) > 2):
-        ip = sys.argv[1]
-        port = int(sys.argv[2])
+
+    arg = argparse.ArgumentParser(description="Servidor")
+    arg.add_argument("--name", dest="name", type=str, default='test', help="nome")
+    arg.add_argument("--port", dest="port", type=int, default=5554, help="porta que o servidor escuta")
+    arg.add_argument("--ip", dest="ip", type=str, default='localhost', help="endereco ip do servidor")
+
+    if (len(sys.argv) < 1):
+        arg.print_help()
+        sys.exit(1)
+
+    args = arg.parse_args()
+    port = args.port
+    ip=args.ip
+    name=args.name
+
     client = Client(ip, port)
     root=Tk()
     try:
         client.connect()
-        name='ailson'
         data='name='+name
         client.send(msg=data)
         # Collect events until released

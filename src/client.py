@@ -3,6 +3,7 @@ import sys
 import argparse
 import time
 from pynput.keyboard import Key, Listener
+from threading import Thread, Event
 try:
     from tkinter import Tk
 except ImportError:
@@ -75,9 +76,17 @@ class Client:
             self.send(msg='down')
 
     def on_release(self, key):
-        if key == Key.esc:
-            # Stop listener
+        if key == 'Stop':
             return False
+
+    def read(self):
+        while True:
+            data = self.__sckt.recv(1024)
+            if 'Stop' in data:
+            	__sckt.close()
+                self.on_release()
+                return False
+
 
 def main():
 
@@ -97,15 +106,28 @@ def main():
 
     client = Client(ip, port)
     root=Tk()
+
+    def send():
+    	with Listener(
+                on_press=client.on_press,
+                on_release=client.on_release) as listener:
+            listener.join()
+
     try:
         client.connect()
         data='name='+name
         client.send(msg=data)
         # Collect events until released
+        # __thread_Send = Thread(target= send, args='')
+        #__thread_Send.start()
+
         with Listener(
                 on_press=client.on_press,
                 on_release=client.on_release) as listener:
             listener.join()
+        
+        __thread_Receive = Thread(target= client.read, args='')
+        __thread_Receive.start()
         while True:
             client.send(msg='')
 

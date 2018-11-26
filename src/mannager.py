@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 try:
     from tkinter import Tk, StringVar, Toplevel
     from tkinter.ttk import Button, Frame, Radiobutton
@@ -108,7 +109,7 @@ class Mannager(Arena):
             try:
                 client, addr = self.__sckt.accept()
                 ipaddr, port = addr
-                addr = str(ipaddr) + ':' + str(port)
+                addr = str(ipaddr) + ':' + str(port)             
                 self.__conn[addr] = client
                 self.__threads[addr] = Thread(target= self.read, args=(addr,))
                 self.__threads[addr].start()
@@ -133,7 +134,16 @@ class Mannager(Arena):
                     self.players_addrs[addr]=name
                     color=choice(self.__colors)
                     self.add_player(name,color,Snake(color=color, initial_pos=[random.randint(0,29), random.randint(0,29)]))
-            print(data)
+            #print(data)
+
+    def wait_ans(self, addr=''):
+        del self.players[self.players_addrs[addr]]
+        del self.players_colors[self.players_addrs[addr]]
+        del self.players_score[self.players_addrs[addr]]
+    	msg = 'Stop'
+    	print(msg)
+    	sent = self.__conn[addr].send(msg)
+    	self.__conn[addr].close()
 
     def add_player(self,player_name, player_color, player_snake):
         self.players[player_name]=player_snake
@@ -188,7 +198,14 @@ class Mannager(Arena):
                     self.brew_food(True)
                 if 'crash' in msg:
                     self.lose_msg(key + '\nHAVE CRASHED')
-                    return
+                    addr = ''
+                    for i in self.players_addrs:
+                        if self.players_addrs[i] == key:
+                            addr = i
+                            break 
+                    del self.__threads[addr]
+                    self.__threads[addr] = Thread(target= self.wait_ans, args=(addr,))
+                    self.__threads[addr].start()        
                 
                 self.update()
                 self.update_score(self.players_score)
